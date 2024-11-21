@@ -7,51 +7,51 @@ let tienda = new Cl_tienda(Dt_tienda.montoCaja, Dt_tienda.porcIncremento);
 
 Dt_ventas.forEach((venta) => tienda.agregarVenta(venta.cliente, venta.factura, venta.costo, venta.cnArticulos));
 
-let agregarVenta = () => {
+let agregarVenta = (tienda, salida) => {
     let cliente = prompt("Ingrese el nombre del cliente");
     let factura = prompt("Ingrese el nro de factura");
     let costo = prompt("Ingrese el costo");
     let cnArticulos = prompt("Ingrese la cantidad de articulos");
     tienda.agregarVenta(cliente, factura, costo, cnArticulos);
-    salida2.innerHTML = `<br>Venta agregada`;
+    salida.innerHTML = `<br>Venta agregada`;
 }
-let modificarVenta = () => {
+let modificarVenta = (tienda, salida) => {
     let factura = prompt("Ingrese el nro de la factura a modificar");
     let resultado = tienda.ventas.filter((venta) => venta.factura == factura);
     if (resultado.length == 0) {
-        salida2.innerHTML = `<br>No existe ninguna venta con ese nro de factura`;
+        salida.innerHTML = `<br>No existe ninguna venta con ese nro de factura`;
     } else if (resultado.length > 0) {
         let cliente = prompt("Ingrese el nuevo nombre del cliente");
         let costo = prompt("Ingrese el nuevo costo de la venta");
         let cnArticulos = prompt("Ingrese la nueva cantidad de articulos");
         let porcIncremento = Dt_tienda.porcIncremento;
         tienda.modificarVenta(factura, new Cl_venta(cliente, factura, costo, cnArticulos, porcIncremento));
-        salida2.innerHTML = `<br>Venta con factura nro ${factura} modificada`;
+        salida.innerHTML = `<br>Venta con factura nro ${factura} modificada`;
     }
 }
-let eliminarVenta = () => {
+let eliminarVenta = (tienda, salida) => {
     let factura = prompt("Ingrese el nro de la factura a eliminar");
     if(tienda.eliminarVenta(factura))
-        salida2.innerHTML = `<br>Venta con factura nro ${factura} eliminada`;
+        salida.innerHTML = `<br>Venta con factura nro ${factura} eliminada`;
     else 
-        salida2.innerHTML = `<br>No existe ninguna venta con ese nro de factura`;
+        salida.innerHTML = `<br>No existe ninguna venta con ese nro de factura`;
 }
-let clientesMontoMayor = () => {
+let clientesMontoMayor = (tienda, salida) => {
     let ventas = tienda.clientesMontoMayor();
-    salida2.innerHTML = `<br>Clientes que pagaron el monto mayor:`;
+    salida.innerHTML = `<br>Clientes que pagaron el monto mayor:`;
     ventas.forEach((venta) => {
-        salida2.innerHTML += `<br>${venta.cliente}`
+        salida.innerHTML += `<br>${venta.cliente}`
     });
 }
-let clientesSoloUnArt = () => {
+let clientesSoloUnArt = (tienda, salida) => {
     let ventas = tienda.clientesSoloUnArt();
     if(ventas.length == 0) {
-        salida2.innerHTML = `<br>No hay clientes que solo llevaron 1 articulo`;
+        salida.innerHTML = `<br>No hay clientes que solo llevaron 1 articulo`;
         return;
     }
-    salida2.innerHTML = `<br>Clientes que solo llevaron 1 articulo:`;
+    salida.innerHTML = `<br>Clientes que solo llevaron 1 articulo:`;
     ventas.forEach((venta) => {
-        salida2.innerHTML += `<br>${venta.cliente}`
+        salida.innerHTML += `<br>${venta.cliente}`
     });
 }
 let listarVentas = () => {
@@ -95,22 +95,22 @@ opciones.onclick = () => {
     let opcion = +prompt("Seleccione su opcion:")
     switch(opcion) {
         case 1:
-            agregarVenta();
+            agregarVenta(tienda, salida2);
             break;
         case 2:
-            modificarVenta();
+            modificarVenta(tienda, salida2);
             break;
         case 3:
-            eliminarVenta();
+            eliminarVenta(tienda, salida2);
             break;
         case 4:
             salida2.innerHTML = `<br>Monto final en caja: $${tienda.montoFinalCaja()}`;
             break;
         case 5:
-            clientesMontoMayor();
+            clientesMontoMayor(tienda, salida2);
             break;
         case 6:
-            clientesSoloUnArt();
+            clientesSoloUnArt(tienda, salida2);
             break;
         case 7:
             listarVentas();
